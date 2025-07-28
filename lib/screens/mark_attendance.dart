@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vishnu_training_and_placements/models/schedule_model.dart';
 import 'package:vishnu_training_and_placements/services/attendance_service.dart';
 import 'package:vishnu_training_and_placements/services/venue_service.dart';
@@ -247,7 +247,7 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
                         Row(
                           children: [
                             SizedBox(
-                              width: 100, // Fixed width for labels
+                              width: 85, // Fixed width for labels
                               child: Text(
                                 'Date :',
                                 style: TextStyle(
@@ -272,7 +272,7 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
                         Row(
                           children: [
                             SizedBox(
-                              width: 100, // Fixed width for labels
+                              width: 85, // Fixed width for labels
                               child: Text(
                                 'Time :',
                                 style: TextStyle(
@@ -297,7 +297,7 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
                         Row(
                           children: [
                             SizedBox(
-                              width: 100, // Fixed width for labels
+                              width: 85, // Fixed width for labels
                               child: Text(
                                 'Location :',
                                 style: TextStyle(
@@ -306,12 +306,15 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
                                 ),
                               ),
                             ),
-                            Text(
-                              "${widget.schedule!.location} - ${widget.schedule!.roomNo}",
-                              style: TextStyle(
-                                color: AppConstants.textWhite,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                            Expanded(
+                              child: Text(
+                                "${widget.schedule!.location} - ${widget.schedule!.roomNo}",
+                                style: TextStyle(
+                                  color: AppConstants.textWhite,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                softWrap: true,
                               ),
                             ),
                           ],
@@ -365,69 +368,31 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
                       ],
                     ),
                   ),
-                  const SizedBox(height: 30),
-
-                  // Attendance Status Section
-                  const Text(
-                    'Attendance Status',
-                    style: TextStyle(
-                      color: AppConstants.textWhite,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                   const SizedBox(height: 20),
-
-                  // Pie Chart
-                  PieChart(
-                    dataMap: attendanceData,
-                    animationDuration: const Duration(milliseconds: 900),
-                    chartLegendSpacing: 32,
-                    chartRadius: MediaQuery.of(context).size.width / 3,
-                    colorList: const [
-                      AppConstants.piechartcolor1,
-                      AppConstants.piechartcolor2,
-                    ],
-                    initialAngleInDegree: 0,
-                    chartType: ChartType.ring,
-                    ringStrokeWidth: 32,
-                    legendOptions: const LegendOptions(
-                      showLegendsInRow: true,
-                      legendPosition: LegendPosition.bottom,
-                      showLegends: true,
-                      legendTextStyle: TextStyle(color: AppConstants.textWhite),
-                    ),
-                    chartValuesOptions: const ChartValuesOptions(
-                      showChartValueBackground: true,
-                      showChartValues: false,
-                      showChartValuesInPercentage: true,
-                      showChartValuesOutside: true,
-                      decimalPlaces: 1,
+                  Center(
+                    child: SizedBox(
+                      height: height * 0.35,
+                      child: Transform.scale(
+                        scale: 1.5,
+                        child: Lottie.asset(
+                          isMarked
+                              ? 'assets/marked1.json' //marked
+                              : 'assets/unmarked.json', //default
+                          frameRate: FrameRate(100),
+                        ), 
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const Text(
-                          'Total Attendance :',
-                          style: TextStyle(
-                            color: AppConstants.textWhite,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          '${attendanceData["Present"]?.toInt()} %',
-                          style: const TextStyle(
-                            color: AppConstants.textWhite,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                  Text(
+                    isMarked
+                        ? "Your Attendance is marked successfully" //marked
+                        : "Please be in your designated area before marking Attendance", //default
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: AppConstants.textWhite,
+                      fontFamily: 'Alata',
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
